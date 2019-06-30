@@ -20,4 +20,9 @@ public class Users {
 	@Column(length = 50, unique = true)
 	@NotNull	
 	private String name;
+	
+	@Column(length = 64)
+	//@NotNull
+	private String password;
+	
 }

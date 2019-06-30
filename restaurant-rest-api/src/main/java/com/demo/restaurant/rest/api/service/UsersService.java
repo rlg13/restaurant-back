@@ -53,7 +53,7 @@ public class UsersService {
 		UserRest user = new UserRest();
 		try {
 			Users userData = usersRepository.findById(idUser).orElseThrow();
-			BeanUtils.copyProperties(userData, user);
+			BeanUtils.copyProperties(userData, user, new String[] {"password"});
 		} catch (NoSuchElementException e) {
 			throw new NoDataFoundException(NoDataFoundException.USER_NOT_FOUND);
 		}
@@ -61,16 +61,16 @@ public class UsersService {
 		return user;
 	}
 
-	public UserRest getUser(@NonNull String name) throws NoDataFoundException {
-		UserRest user = new UserRest();
+	public UserRest getUser(@NonNull UserRest user) throws NoDataFoundException {
+		UserRest userLoged = new UserRest();
 
-		Users userData = usersRepository.findOneByName(name);
+		Users userData = usersRepository.findOneByNameAndPassword(user.getName(),user.getPassword());
 		if(userData == null) {
 			throw new NoDataFoundException(NoDataFoundException.USER_NOT_FOUND);
 		}
-		BeanUtils.copyProperties(userData, user);
+		BeanUtils.copyProperties(userData, userLoged,new String[] {"password"});
 
-		return user;
+		return userLoged;
 	}
 
 }

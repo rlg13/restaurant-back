@@ -9,5 +9,6 @@ public class UserRest {
 
 	private String name;
 	private Long id;
+	private String password;
 	
 }
