@@ -1,8 +1,11 @@
 package com.demo.restaurant.rest.api.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,11 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.demo.restaurant.rest.api.controller.beans.FilterParams;
 import com.demo.restaurant.rest.api.controller.beans.OrderRest;
+import com.demo.restaurant.rest.api.controller.beans.UserRest;
 import com.demo.restaurant.rest.api.exceptions.InvalidRequestException;
 import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.service.OrderService;
@@ -52,16 +57,15 @@ public class OrderController {
 	}
 
 	@GetMapping(path = "/orders")
-	public ResponseEntity<List<OrderRest>> getAllOrdersByName(@RequestBody FilterParams filterParams) {
+	public ResponseEntity<List<OrderRest>> getAllOrdersByName(@RequestParam(name = "initialDate")@DateTimeFormat(iso = ISO.DATE) Date initialDate,@RequestParam(name = "endDate")@DateTimeFormat(iso = ISO.DATE) Date endDate,@RequestParam(name = "user") String user) {
 		List<OrderRest> results;
-		if (filterParams.getInicialDate() == null || filterParams.getEndDate() == null
-				|| filterParams.getUser() == null) {
+		if (initialDate == null || endDate== null
+				|| user == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.INVALID_PARAMS);
 		}
 		// TODO: Filtrar con excepcion mas de X dias ??
 
-		results = orderService.getAllOrdersByUser(filterParams.getUser().getName(), filterParams.getInicialDate(),
-				filterParams.getEndDate());
+		results = orderService.getAllOrdersByUser(user, initialDate,endDate);
 
 		return ResponseEntity.ok().body(results);
 
