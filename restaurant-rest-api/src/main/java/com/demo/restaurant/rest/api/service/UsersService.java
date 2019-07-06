@@ -37,11 +37,10 @@ public class UsersService {
 	}
 
 	public UserRest createUser(UserRest user) throws AlreadyExistsException {
-		Users newUser = new Users();
-		BeanUtils.copyProperties(user, newUser);
+		Users newUser = new Users();		
 		try {
 			newUser = usersRepository.save(newUser);
-			user.setId(newUser.getId());
+			BeanUtils.copyProperties(user, newUser);
 			return user;
 		} catch (DataIntegrityViolationException exp) { // User name exists
 			throw new AlreadyExistsException(AlreadyExistsException.USER_EXISTS);
@@ -49,11 +48,11 @@ public class UsersService {
 
 	}
 
-	public UserRest getUser(@NonNull Long idUser) throws NoDataFoundException {
+	public UserRest getUser(@NonNull String name) throws NoDataFoundException {
 		UserRest user = new UserRest();
 		try {
-			Users userData = usersRepository.findById(idUser).orElseThrow();
-			BeanUtils.copyProperties(userData, user, new String[] {"password"});
+			Users userData = usersRepository.findById(name).orElseThrow();
+			BeanUtils.copyProperties(userData, user, "password");
 		} catch (NoSuchElementException e) {
 			throw new NoDataFoundException(NoDataFoundException.USER_NOT_FOUND);
 		}
@@ -68,7 +67,7 @@ public class UsersService {
 		if(userData == null) {
 			throw new NoDataFoundException(NoDataFoundException.USER_NOT_FOUND);
 		}
-		BeanUtils.copyProperties(userData, userLoged,new String[] {"password"});
+		BeanUtils.copyProperties(userData, userLoged,"password");
 
 		return userLoged;
 	}

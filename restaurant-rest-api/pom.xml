@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.demo.restaurant</groupId>
+
 	<artifactId>restaurant-rest-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>restaurant-rest-api</name>

@@ -1,7 +1,5 @@
 package com.demo.restaurant.rest.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,18 +26,11 @@ public class UserController {
 	@Autowired
 	private UsersService usersService;
 
-	@GetMapping(path = "/users")
-	public ResponseEntity<List<UserRest>> getAllUsers() {
-
-		return ResponseEntity.ok().body(usersService.getAllUsers());
-
-	}
-	
 	@GetMapping(path = "/users/{id}")
-	public ResponseEntity<UserRest> getUser(@PathVariable Long id) {
+	public ResponseEntity<UserRest> getUser(@PathVariable String name) {
 
 		try {
-			UserRest user =usersService.getUser(id);
+			UserRest user =usersService.getUser(name);
 			return ResponseEntity.ok().body(user);
 		} catch (NoDataFoundException exp) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, NoDataFoundException.USER_NOT_FOUND,exp);
@@ -65,23 +56,4 @@ public class UserController {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, AlreadyExistsException.USER_EXISTS,exp);
 		}
 	}
-	
-	
-
-	
-
-//	@GetMapping(path = "/load")
-//	public ResponseEntity<Void> movida() {
-//		Users usuario = new Users();
-//		usuario.setName("movidas");
-//		Orders order = new Orders();
-//		order.setDayOrder(new Date());
-//		order.setState(OrderState.RECEIVED);
-//		order.setLastUpdteDate(new Date());
-//		order.setUser(usuario);
-//		usersRepository.save(usuario);
-//		ordersRepository.save(order);
-//		return ResponseEntity.ok().body(null);
-//	}
-
 }
