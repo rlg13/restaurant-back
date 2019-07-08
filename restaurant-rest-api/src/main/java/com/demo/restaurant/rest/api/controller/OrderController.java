@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.demo.restaurant.rest.api.controller.beans.FilterParams;
 import com.demo.restaurant.rest.api.controller.beans.OrderRest;
-import com.demo.restaurant.rest.api.controller.beans.UserRest;
 import com.demo.restaurant.rest.api.exceptions.InvalidRequestException;
 import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.service.OrderService;
@@ -27,7 +25,7 @@ import com.demo.restaurant.rest.api.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 @RestController
 public class OrderController {
 
@@ -57,15 +55,15 @@ public class OrderController {
 	}
 
 	@GetMapping(path = "/orders")
-	public ResponseEntity<List<OrderRest>> getAllOrdersByName(@RequestParam(name = "initialDate")@DateTimeFormat(iso = ISO.DATE) Date initialDate,@RequestParam(name = "endDate")@DateTimeFormat(iso = ISO.DATE) Date endDate,@RequestParam(name = "user") String user) {
+	public ResponseEntity<List<OrderRest>> getAllOrdersByName(@RequestParam(name = "initialDate")@DateTimeFormat(iso = ISO.DATE) Date initialDate,@RequestParam(name = "endDate")@DateTimeFormat(iso = ISO.DATE) Date endDate,@RequestParam(name = "user") Long userId) {
 		List<OrderRest> results;
 		if (initialDate == null || endDate== null
-				|| user == null) {
+				|| userId == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.INVALID_PARAMS);
 		}
 		// TODO: Filtrar con excepcion mas de X dias ??
 
-		results = orderService.getAllOrdersByUser(user, initialDate,endDate);
+		results = orderService.getAllOrdersByUser(userId, initialDate,endDate);
 
 		return ResponseEntity.ok().body(results);
 

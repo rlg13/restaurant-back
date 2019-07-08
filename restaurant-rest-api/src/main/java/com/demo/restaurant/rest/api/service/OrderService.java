@@ -53,7 +53,7 @@ public class OrderService {
 	private Orders mapToBBDD(OrderRest data) {
 		Orders order = new Orders();		
 		Users user = new Users();
-		user.setName(data.getUser().getName());
+		user.setId(data.getUser().getId());
 		order.setUser(user);
 
 		order.setFirstDish(this.mapToBBDDD(data.getFirstDish()));
@@ -97,11 +97,11 @@ public class OrderService {
 	}
 
 
-	public List<OrderRest> getAllOrdersByUser(String name, Date inicialDate, Date endDate) {
+	public List<OrderRest> getAllOrdersByUser(Long id, Date inicialDate, Date endDate) {
 		List<OrderRest> returnOrders = new ArrayList<>();
 		
 		Users user = new Users();
-		user.setName(name);
+		user.setId(id);
 		
 		List<Orders> orderByUSer = ordersRepository.findByUserAndDayOrderBetween(user, inicialDate, endDate);
 		

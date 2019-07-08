@@ -1,9 +1,5 @@
 package com.demo.restaurant.rest.api.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,7 +18,9 @@ public class UsersService {
 
 	@Autowired
 	private UsersRepository usersRepository;
-
+	
+//	@Autowired SessionRepository sessionRepository;
+/*
 	public List<UserRest> getAllUsers() {
 
 		List<UserRest> allUser = new ArrayList<>();
@@ -34,13 +32,14 @@ public class UsersService {
 		}
 
 		return allUser;
-	}
+	}*/
 
 	public UserRest createUser(UserRest user) throws AlreadyExistsException {
 		Users newUser = new Users();		
 		try {
-			newUser = usersRepository.save(newUser);
 			BeanUtils.copyProperties(user, newUser);
+			newUser = usersRepository.save(newUser);
+			BeanUtils.copyProperties(newUser, user);
 			return user;
 		} catch (DataIntegrityViolationException exp) { // User name exists
 			throw new AlreadyExistsException(AlreadyExistsException.USER_EXISTS);
@@ -48,17 +47,17 @@ public class UsersService {
 
 	}
 
-	public UserRest getUser(@NonNull String name) throws NoDataFoundException {
+/*	public UserRest getUser(@NonNull String name) throws NoDataFoundException {
 		UserRest user = new UserRest();
 		try {
-			Users userData = usersRepository.findById(name).orElseThrow();
+			Users userData = usersRepository.findOneByName(name);
 			BeanUtils.copyProperties(userData, user, "password");
 		} catch (NoSuchElementException e) {
 			throw new NoDataFoundException(NoDataFoundException.USER_NOT_FOUND);
 		}
 
 		return user;
-	}
+	}*/
 
 	public UserRest getUser(@NonNull UserRest user) throws NoDataFoundException {
 		UserRest userLoged = new UserRest();
