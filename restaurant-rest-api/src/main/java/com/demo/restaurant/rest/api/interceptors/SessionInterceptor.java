@@ -21,59 +21,59 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class SessionInterceptor implements HandlerInterceptor{
+public class SessionInterceptor implements HandlerInterceptor {
 
 	private SessionService sessionService;
-	
+
 	private List<String> authUriList;
-	
+
 	@Value("${server.servlet.context-path}")
 	private String apiBase;
-	
+
 	public SessionInterceptor(SessionService sessionService) {
-		this.sessionService = sessionService;	
+		this.sessionService = sessionService;
 	}
-	
-	
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String sesionID = request.getHeader(Constants.HEADER_SESSION);
 		UUID uuid;
-		if(checkPublicUri(request.getRequestURI()) || request.getMethod().equals("OPTIONS")) {
+		if (checkPublicUri(request.getRequestURI()) || request.getMethod().equals("OPTIONS")) {
 			return HandlerInterceptor.super.preHandle(request, response, handler);
 		}
-		
-		if(sesionID == null) {
+
+		if (sesionID == null) {
 			log.error("Session not exists");
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.INTERCEPTOR_EXCEPTION_MESSAGE);
 		}
-		uuid = UUID.fromString(sesionID); 
+		uuid = UUID.fromString(sesionID);
 		try {
-			if(!sessionService.validateSession(uuid)) {
+			if (!sessionService.validateSession(uuid)) {
 				log.error("Call with session invalid");
-				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.INTERCEPTOR_EXCEPTION_MESSAGE);				
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.INTERCEPTOR_EXCEPTION_MESSAGE);
 			}
+			sessionService.refreshSession(uuid);
 		} catch (NoDataFoundException e) {
 			log.error("Session not exists");
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.INTERCEPTOR_EXCEPTION_MESSAGE);
 		}
-		
+
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
-	
+
 	private boolean checkPublicUri(String requestUri) {
-		if(authUriList == null) {
+		if (authUriList == null) {
 			inicialize();
 		}
 		return authUriList.contains(requestUri);
 	}
-	
+
 	private void inicialize() {
 		authUriList = new ArrayList<>();
-		authUriList.add(apiBase+"/users");
-		authUriList.add(apiBase+"/users/login");
-		authUriList.add(apiBase+"/error");
+		authUriList.add(apiBase + "/users");
+		authUriList.add(apiBase + "/users/login");
+		authUriList.add(apiBase + "/error");
 	}
-	
+
 }
