@@ -1,6 +1,7 @@
 package com.demo.restaurant.rest.api.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -61,15 +62,18 @@ public class OrderService {
 		order.setDessert(this.mapToBBDDD(data.getDessert()));
 		
 		order.setDayOrder(data.getDayOrder());
+		order.setDayToServe(calculateDayToServe(data.getDayOrder()));
 		order.setState(OrderState.RECEIVED);
 
-		order.setLastUpdteDate(new Date());
+		
 		return order;
 	}
 	
+
+	
 	private DishCatalog mapToBBDDD(DishRest dish) {
 		DishCatalog joinDish = null;
-		if(dish != null) {
+		if(dish != null && dish.getId() != null) {
 			joinDish = new DishCatalog();
 			BeanUtils.copyProperties(dish, joinDish);
 		}
@@ -84,9 +88,15 @@ public class OrderService {
 		UserRest user = new UserRest();
 
 		BeanUtils.copyProperties(data, order);
-		BeanUtils.copyProperties(data.getFirstDish(), fisrt);
-		BeanUtils.copyProperties(data.getSecondDish(), second);
-		BeanUtils.copyProperties(data.getDessert(), dessert);
+		if(data.getFirstDish() != null) {
+			BeanUtils.copyProperties(data.getFirstDish(), fisrt);
+		}
+		if(data.getSecondDish() != null) {
+			BeanUtils.copyProperties(data.getSecondDish(), second);
+		}
+		if(data.getDessert() != null) {
+			BeanUtils.copyProperties(data.getDessert(), dessert);
+		}
 		BeanUtils.copyProperties(data.getUser(), user, "password");
 		order.setFirstDish(fisrt);
 		order.setSecondDish(second);
@@ -95,6 +105,8 @@ public class OrderService {
 
 		return order;
 	}
+	
+	
 
 
 	public List<OrderRest> getAllOrdersByUser(Long id, Date inicialDate, Date endDate) {
@@ -113,4 +125,37 @@ public class OrderService {
 		return returnOrders;
 	}
 
+	private Date calculateDayToServe(Date dayOrder) {
+		Calendar now = Calendar.getInstance();
+		if(dayOrder.after( endOfDay())) {
+			return normalizeDate(dayOrder);
+		}		
+		if(normalizeDate(dayOrder).equals(normalizeDate(now.getTime()))) {
+			if(now.get(Calendar.HOUR_OF_DAY)> 11 ) {
+				now.add(Calendar.DAY_OF_YEAR, 1);
+				return normalizeDate(now.getTime());
+			}
+		}
+		return normalizeDate(now.getTime());
+		
+	}
+	
+	private Date normalizeDate(Date date) {
+		Calendar cal= Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
+	
+	private Date endOfDay(){
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 23);
+		today.set(Calendar.MINUTE, 59);
+		today.set(Calendar.SECOND, 59);
+		today.set(Calendar.MILLISECOND, 999);
+		return today.getTime();
+	}
 }

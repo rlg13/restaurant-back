@@ -74,6 +74,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 		authUriList.add(apiBase + "/users");
 		authUriList.add(apiBase + "/users/login");
 		authUriList.add(apiBase + "/error");
+		authUriList.add(apiBase + "/users/logout");
+		
 	}
 
 }

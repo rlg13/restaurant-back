@@ -34,10 +34,13 @@ public class Orders {
 	private Date dayOrder;
 	
 	@NotNull
+	private Date dayToServe;
+	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private OrderState state;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "first_dish_id", nullable = true)	
 	private DishCatalog firstDish;
 	
@@ -45,12 +48,11 @@ public class Orders {
 	@JoinColumn(name = "second_dish_id", nullable = true)
 	private DishCatalog secondDish;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "desert_id", nullable = true)
 	private DishCatalog dessert;
 	
-	@NotNull
-	private Date lastUpdteDate;
+
 	
 	
 	

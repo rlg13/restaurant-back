@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,8 +43,8 @@ public class UserController {
 		}
 	}*/
 	
-	@DeleteMapping(path = "/users/login/{id}")
-	public ResponseEntity<UserRest> getUserByName(@PathVariable Long id) {
+	@DeleteMapping(path = "/users/logout")
+	public ResponseEntity<UserRest> getUserByName(@RequestParam(name = "id") Long id) {
 		sessionService.invalidateSession(id);		
 		return ResponseEntity.ok().build();
 	}

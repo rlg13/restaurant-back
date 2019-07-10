@@ -14,6 +14,8 @@ public class OrderRest {
 	private Long id;
 	
 	private Date dayOrder;
+	
+	private Date dayToServe;
 		
 	private UserRest user;
 	
