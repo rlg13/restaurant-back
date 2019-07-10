@@ -26,6 +26,7 @@
 
 	<modules>
 		<module>restaurant-rest-api</module>
+		<module>restaurant-batch</module>
 	</modules>
 
 
