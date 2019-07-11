@@ -21,6 +21,7 @@ import com.demo.restaurant.rest.api.controller.beans.OrderRest;
 import com.demo.restaurant.rest.api.exceptions.InvalidRequestException;
 import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.service.OrderService;
+import com.demo.restaurant.rest.api.types.OrderState;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,15 +56,25 @@ public class OrderController {
 	}
 
 	@GetMapping(path = "/orders")
-	public ResponseEntity<List<OrderRest>> getAllOrdersByName(@RequestParam(name = "initialDate")@DateTimeFormat(iso = ISO.DATE) Date initialDate,@RequestParam(name = "endDate")@DateTimeFormat(iso = ISO.DATE) Date endDate,@RequestParam(name = "user") Long userId) {
+	public ResponseEntity<List<OrderRest>> getAllOrdersByName(
+			@RequestParam(name = "initialDate") @DateTimeFormat(iso = ISO.DATE) Date initialDate,
+			@RequestParam(name = "endDate") @DateTimeFormat(iso = ISO.DATE) Date endDate,
+			@RequestParam(name = "user") Long userId) {
 		List<OrderRest> results;
-		if (initialDate == null || endDate== null
-				|| userId == null) {
+		if (initialDate == null || endDate == null || userId == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.INVALID_PARAMS);
 		}
 		// TODO: Filtrar con excepcion mas de X dias ??
 
-		results = orderService.getAllOrdersByUser(userId, initialDate,endDate);
+		results = orderService.getAllOrdersByUser(userId, initialDate, endDate);
+
+		return ResponseEntity.ok().body(results);
+	}
+
+	@GetMapping(path = "/orders/batch")
+	public ResponseEntity<List<OrderRest>> getAllOrdersCurrentDay(@RequestParam(name = "state") OrderState state,
+			@RequestParam(name = "dayToServe") Date dayToServe) {
+		List<OrderRest> results = orderService.getAllOrdersByStateAndDayToServe(state, dayToServe);
 
 		return ResponseEntity.ok().body(results);
 

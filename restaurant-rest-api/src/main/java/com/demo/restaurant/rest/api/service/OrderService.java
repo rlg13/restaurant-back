@@ -124,6 +124,18 @@ public class OrderService {
 		
 		return returnOrders;
 	}
+	public List<OrderRest> getAllOrdersByStateAndDayToServe(OrderState state, Date dayToServe) {
+		List<OrderRest> returnOrders = new ArrayList<>();
+		
+		List<Orders> orderByUSer = ordersRepository.findByStateAndDayToServe(state, dayToServe);
+		
+		for(Orders temp: orderByUSer) {
+			returnOrders.add(this.mapFromBBDD(temp));
+		}
+		
+		
+		return returnOrders;
+	}
 
 	private Date calculateDayToServe(Date dayOrder) {
 		Calendar now = Calendar.getInstance();

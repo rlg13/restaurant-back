@@ -10,8 +10,7 @@
 	</parent>
 
 
-	<artifactId>restaurant-rest-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>restaurant-rest-api</artifactId>	
 	<name>restaurant-rest-api</name>
 	<description>Module Rest-api</description>
 
@@ -20,6 +19,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.demo.restaurant</groupId>
+			<artifactId>restaurant-common</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -57,7 +60,7 @@
 			<!-- </exclusion> -->
 			<!-- </exclusions> -->
 		</dependency>
-	
+
 	</dependencies>
 
 	<build>

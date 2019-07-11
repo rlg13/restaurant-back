@@ -1,4 +1,4 @@
-package com.demo.restaurant.restaurantbatch.Job.Configuration;
+package com.demo.restaurant.restaurantbatch.job.configuration;
 
 import java.util.Date;
 

@@ -22,11 +22,13 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<beanutils.version>1.9.3</beanutils.version>
+		<common.version>0.0.1-SNAPSHOT</common.version>
 	</properties>
 
 	<modules>
 		<module>restaurant-rest-api</module>
 		<module>restaurant-batch</module>
+		<module>restaurant-common</module>
 	</modules>
 
 
@@ -36,6 +38,11 @@
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
 				<version>${beanutils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.demo.restaurant</groupId>
+				<artifactId>restaurant-common</artifactId>
+				<version>${common.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

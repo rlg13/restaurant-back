@@ -1,4 +1,4 @@
-package com.demo.restaurant.restaurantbatch.Job.Configuration;
+package com.demo.restaurant.restaurantbatch.job.configuration;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -8,7 +8,7 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
-import com.demo.restaurant.restaurantbatch.Job.Tasklet.TaskletProcess;
+import com.demo.restaurant.restaurantbatch.job.tasklet.TaskletProcess;
 
 public class DeliveryJobConfig {
 	private JobBuilderFactory jobBuilderFactory;
