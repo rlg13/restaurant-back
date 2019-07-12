@@ -23,5 +23,7 @@ public class Users {
 	
 	@Column(length = 64, nullable = false)	
 	private String password;
-	
+
+	@Column(columnDefinition = "boolean default false")
+	private Boolean enableSystemOperations;
 }

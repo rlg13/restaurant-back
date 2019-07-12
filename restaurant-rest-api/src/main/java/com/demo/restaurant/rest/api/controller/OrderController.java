@@ -2,8 +2,10 @@ package com.demo.restaurant.rest.api.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
@@ -13,15 +15,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.demo.restaurant.rest.api.controller.beans.OrderRest;
+import com.demo.restaurant.rest.api.controller.beans.UserRest;
+import com.demo.restaurant.rest.api.exceptions.IlegalProcessStateException;
 import com.demo.restaurant.rest.api.exceptions.InvalidRequestException;
 import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.service.OrderService;
+import com.demo.restaurant.rest.api.service.ProcessService;
+import com.demo.restaurant.rest.api.service.SessionService;
 import com.demo.restaurant.rest.api.types.OrderState;
+import com.demo.restaurant.rest.api.utils.Constants;
+import com.demo.restaurant.rest.utils.DateUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +42,15 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
+	@Autowired
+	private ProcessService processService;
+
+	@Autowired
+	private SessionService sessionService;
+
+	@Value("${filter.max-days}")
+	private Integer maxDaysFilter;
+	
 	@GetMapping(path = "/orders/{id}")
 	public ResponseEntity<OrderRest> getOrder(@PathVariable Long id) {
 
@@ -64,20 +82,48 @@ public class OrderController {
 		if (initialDate == null || endDate == null || userId == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.INVALID_PARAMS);
 		}
-		// TODO: Filtrar con excepcion mas de X dias ??
-
+		int days = DateUtils.daysBetweenDates(initialDate, endDate);
+		if(days > maxDaysFilter) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.EXCEEDED_MAX_DAYS);
+		}
 		results = orderService.getAllOrdersByUser(userId, initialDate, endDate);
 
 		return ResponseEntity.ok().body(results);
 	}
 
+	@GetMapping(path = "/orders/{id}/process/{newState}")
+	public ResponseEntity<OrderRest> processOrder(@RequestHeader(value = Constants.HEADER_SESSION) UUID sessionId,
+			@PathVariable Long id, @PathVariable OrderState newState) {
+		OrderRest order;
+		try {
+			order = orderService.getOrder(id);
+			UserRest user = sessionService.getUserBySession(sessionId);
+			order = processService.processState(order, newState, user);
+		} catch (IlegalProcessStateException ilegalState) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ilegalState.getMessage(), ilegalState);
+		} catch (NoDataFoundException notFound) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, notFound.getMessage(), notFound);
+		}
+
+		return ResponseEntity.ok().body(order);
+
+	}
+
 	@GetMapping(path = "/orders/batch")
-	public ResponseEntity<List<OrderRest>> getAllOrdersCurrentDay(@RequestParam(name = "state") OrderState state,
-			@RequestParam(name = "dayToServe") Date dayToServe) {
-		List<OrderRest> results = orderService.getAllOrdersByStateAndDayToServe(state, dayToServe);
-
+	public ResponseEntity<List<OrderRest>> getAllOrdersByStateAndDay(
+			@RequestHeader(value = Constants.HEADER_SESSION) String sessionId) {
+		List<OrderRest> results;
+		try {
+			
+			UserRest user = sessionService.getUserBySession(UUID.fromString(sessionId));
+			if (!user.getEnableSystemOperations()) {
+				throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, Constants.USER_NOT_ALLOWED_OPERATION);
+			}
+			results = orderService.getAllOrdersByStateAndDayToServe(OrderState.RECEIVED, DateUtils.normalizeDate(new Date()));
+		} catch (NoDataFoundException notFound) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, notFound.getMessage(), notFound);
+		}
 		return ResponseEntity.ok().body(results);
-
 	}
 
 }

@@ -15,10 +15,13 @@ spring:
    h2:
       console:
          enabled: true
+filter:
+  max-days: 45   
+
 
 logging:
   level:
-    org.springframework: ERROR
+    org.springframework: INFO
     com.demo.restaurant: DEBUG
   pattern:
     console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"         

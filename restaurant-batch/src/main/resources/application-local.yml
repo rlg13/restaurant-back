@@ -5,7 +5,7 @@ spring:
   username: sa
   batch:
     job:
-      enabled: false
+      enabled: true
 
 logging:
   level:
@@ -19,6 +19,7 @@ api:
   api-path:  /restaurant-api
   endpoint-login: /users/login
   endpoint-filterOrder: /orders/batch
+  endpoint-processOrder: /orders/%d/process/%s
   login:
     name: BatchSystem
     password: 8bbfba079117a2164c56ff7939232e64bca230e64feb0f80d5eee9a67be393b0   

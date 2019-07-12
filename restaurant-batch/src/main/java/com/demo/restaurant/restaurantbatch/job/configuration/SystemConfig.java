@@ -30,8 +30,8 @@ public class SystemConfig {
 		this.deliveryJob = deliveryJob;
 	}
 
-	@Scheduled(cron = "0/10 * * ? * *")//10 seg	
-	//@Scheduled(cron = "0 0 11 ? * *")//Todos los dias a las 11
+//	@Scheduled(cron = "0/10 * * ? * *")//10 seg	
+	@Scheduled(cron = "0 0 11 ? * *")//Todos los dias a las 11
 	private void executeProcessDelivered() throws Exception {
 		jobLauncher.run(deliveryJob, generateJobParameters());
 	}

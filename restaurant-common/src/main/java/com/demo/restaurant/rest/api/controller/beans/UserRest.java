@@ -11,5 +11,6 @@ public class UserRest {
 	private String name;	
 	private String password;
 	private String sessionId;
+	private Boolean enableSystemOperations;
 	
 }

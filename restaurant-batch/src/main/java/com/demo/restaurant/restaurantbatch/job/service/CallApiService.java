@@ -1,15 +1,28 @@
 package com.demo.restaurant.restaurantbatch.job.service;
 
-import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.demo.restaurant.rest.api.controller.beans.OrderRest;
 import com.demo.restaurant.rest.api.controller.beans.UserRest;
+import com.demo.restaurant.rest.api.types.OrderState;
+import com.demo.restaurant.restaurantbatch.job.exception.ProcessException;
+import com.demo.restaurant.restaurantbatch.job.utils.Constants;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CallApiService {
 
@@ -21,10 +34,12 @@ public class CallApiService {
 
 	@Value("${api.endpoint-login}")
 	private String endPointLogin;
-	
+
 	@Value("${api.endpoint-filterOrder}")
 	private String endpointFilterOrder;
-	
+
+	@Value("${api.endpoint-processOrder}")
+	private String endpointProcessOrder;
 
 	@Value("${api.login.name}")
 	private String name;
@@ -44,24 +59,42 @@ public class CallApiService {
 
 		ResponseEntity<UserRest> response = restTemplate.postForEntity(url + apiPath + endPointLogin, session,
 				UserRest.class);
-		
-		if(response.getStatusCode() != HttpStatus.OK) {
-			//Excepcion
+
+		if (response.getStatusCode() != HttpStatus.OK) {
+			// Excepcion
 		}
-		
+
 		return response.getBody();
 	}
-	
-/*	public SessionBatch getAllOrdersToServeByDay() {
+
+	public List<OrderRest> getAllOrdersToServeByDay(String sessionId) {
 		RestTemplate restTemplate = new RestTemplate();
-		
-		ResponseEntity<Foo> response = restTemplate
-				  .exchange(fooResourceUrl, HttpMethod.POST, request, Foo.class);
-		
-		ResponseEntity<SessionBatch> response = restTemplate.postForEntity(url + apiPath + endPointLogin, session,
-				SessionBatch.class);
-	}*/
-	
+
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add(Constants.HEADER_SESSION, sessionId);
+		HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+		ResponseEntity<List<OrderRest>> response = restTemplate.exchange(url + apiPath + endpointFilterOrder,
+				HttpMethod.GET, entity, new ParameterizedTypeReference<List<OrderRest>>() {
+				});
+
+		return response.getBody();
+	}
+
+	public OrderRest processOrder(OrderRest order, String sessionId) throws ProcessException {
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(Constants.HEADER_SESSION, sessionId);
+		HttpEntity<Void> entity = new HttpEntity<>(headers);
+		String endPoint = String.format(endpointProcessOrder, order.getId(), OrderState.DELIVERED);
+		ResponseEntity<OrderRest> response = restTemplate.exchange(url + apiPath + endPoint, HttpMethod.GET, entity,
+				OrderRest.class);
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new ProcessException(String.format(ProcessException.ERROR_PROCESS, order.getId()));
+		}
+		return response.getBody();
+	}
+
 //	private static String bytesToHex(byte[] hash) {
 //	    StringBuffer hexString = new StringBuffer();
 //	    for (int i = 0; i < hash.length; i++) {

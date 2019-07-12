@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,20 @@ public class SessionService {
 		}
 		
 	}
+	
+	public UserRest getUserBySession(@NonNull UUID sessionId) throws NoDataFoundException {
+		UserRest user;
+		try {
+			Session session = sessionRepository.findById(sessionId).orElseThrow();
+			user = new UserRest();
+			BeanUtils.copyProperties(session.getUser(), user);
+			
+		} catch (NoSuchElementException e) {
+			throw new NoDataFoundException(NoDataFoundException.SESSION_NOT_FOUND);
+		}
+		return user;
+	}
+	
 	public boolean validateSession(@NonNull UUID sessionId) throws NoDataFoundException {
 		try {
 			Session session = sessionRepository.findById(sessionId).orElseThrow();
