@@ -7,8 +7,9 @@ import com.demo.restaurant.rest.api.model.Users;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
-	
-	public Users  findOneByName(String name);
-	public Users  findOneByNameAndPassword(String name, String password);
+
+	public Users findOneByName(String name);
+
+	public Users findOneByNameAndPassword(String name, String password);
 
 }

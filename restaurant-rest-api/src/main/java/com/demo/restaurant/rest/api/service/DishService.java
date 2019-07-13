@@ -25,7 +25,6 @@ public class DishService {
 	private DishCatalogRepository dishCatalogRepository;
 
 	public List<DishRest> getAllDishes() {
-
 		List<DishRest> allDishes = new ArrayList<>();
 
 		for (DishCatalog temp : dishCatalogRepository.findAll()) {
@@ -36,9 +35,8 @@ public class DishService {
 
 		return allDishes;
 	}
-	
-	public List<DishRest> getDishesByType(DishType type) {
 
+	public List<DishRest> getDishesByType(DishType type) {
 		List<DishRest> dishesByType = new ArrayList<>();
 
 		for (DishCatalog temp : dishCatalogRepository.findByType(type)) {
@@ -50,9 +48,9 @@ public class DishService {
 		return dishesByType;
 	}
 
-
 	public DishRest createDish(DishRest dish) throws AlreadyExistsException {
 		DishCatalog newDish = new DishCatalog();
+
 		BeanUtils.copyProperties(dish, newDish);
 		try {
 			newDish = dishCatalogRepository.save(newDish);
@@ -66,6 +64,7 @@ public class DishService {
 
 	public DishRest getDish(@NonNull Long idDish) throws NoDataFoundException {
 		DishRest dish = new DishRest();
+
 		try {
 			DishCatalog dishItem = dishCatalogRepository.findById(idDish).orElseThrow();
 			BeanUtils.copyProperties(dishItem, dish);
@@ -76,5 +75,4 @@ public class DishService {
 		return dish;
 	}
 
-	
 }

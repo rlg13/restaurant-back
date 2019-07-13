@@ -50,7 +50,7 @@ public class OrderController {
 
 	@Value("${filter.max-days}")
 	private Integer maxDaysFilter;
-	
+
 	@GetMapping(path = "/orders/{id}")
 	public ResponseEntity<OrderRest> getOrder(@PathVariable Long id) {
 
@@ -58,11 +58,11 @@ public class OrderController {
 			OrderRest order = orderService.getOrder(id);
 
 			return ResponseEntity.ok().body(order);
-
 		} catch (NoDataFoundException exp) {
 			log.error("Order {} not found", id);
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, NoDataFoundException.ORDER_NOT_FOUND, exp);
 		}
+
 	}
 
 	@PostMapping(path = "/orders")
@@ -79,11 +79,12 @@ public class OrderController {
 			@RequestParam(name = "endDate") @DateTimeFormat(iso = ISO.DATE) Date endDate,
 			@RequestParam(name = "user") Long userId) {
 		List<OrderRest> results;
+
 		if (initialDate == null || endDate == null || userId == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.INVALID_PARAMS);
 		}
 		int days = DateUtils.daysBetweenDates(initialDate, endDate);
-		if(days > maxDaysFilter) {
+		if (days > maxDaysFilter) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.EXCEEDED_MAX_DAYS);
 		}
 		results = orderService.getAllOrdersByUser(userId, initialDate, endDate);
@@ -95,6 +96,7 @@ public class OrderController {
 	public ResponseEntity<OrderRest> processOrder(@RequestHeader(value = Constants.HEADER_SESSION) UUID sessionId,
 			@PathVariable Long id, @PathVariable OrderState newState) {
 		OrderRest order;
+
 		try {
 			order = orderService.getOrder(id);
 			UserRest user = sessionService.getUserBySession(sessionId);
@@ -106,7 +108,6 @@ public class OrderController {
 		}
 
 		return ResponseEntity.ok().body(order);
-
 	}
 
 	@GetMapping(path = "/orders/batch")
@@ -114,15 +115,17 @@ public class OrderController {
 			@RequestHeader(value = Constants.HEADER_SESSION) String sessionId) {
 		List<OrderRest> results;
 		try {
-			
+
 			UserRest user = sessionService.getUserBySession(UUID.fromString(sessionId));
 			if (!user.getEnableSystemOperations()) {
 				throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, Constants.USER_NOT_ALLOWED_OPERATION);
 			}
-			results = orderService.getAllOrdersByStateAndDayToServe(OrderState.RECEIVED, DateUtils.normalizeDate(new Date()));
+			results = orderService.getAllOrdersByStateAndDayToServe(OrderState.RECEIVED,
+					DateUtils.normalizeDate(new Date()));
 		} catch (NoDataFoundException notFound) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, notFound.getMessage(), notFound);
 		}
+
 		return ResponseEntity.ok().body(results);
 	}
 

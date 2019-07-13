@@ -22,8 +22,6 @@ import lombok.NonNull;
 @Service
 public class SessionService {
 
-	
-
 	@Autowired
 	SessionRepository sessionRepository;
 
@@ -32,7 +30,7 @@ public class SessionService {
 		Users userModel = new Users();
 
 		userModel.setId(user.getId());
-		session.setUser(userModel);		
+		session.setUser(userModel);
 		session.setExpirationDate(nextDate());
 		session = sessionRepository.save(session);
 
@@ -42,9 +40,10 @@ public class SessionService {
 
 	public void invalidateSession(Long userID) {
 		Users user = new Users();
+
 		user.setId(userID);
 		List<Session> sessionActive = sessionRepository.findByUser(user);
-		for(Session temp : sessionActive) {
+		for (Session temp : sessionActive) {
 			sessionRepository.deleteById(temp.getId());
 		}
 	}
@@ -57,23 +56,26 @@ public class SessionService {
 		} catch (NoSuchElementException e) {
 			throw new NoDataFoundException(NoDataFoundException.SESSION_NOT_FOUND);
 		}
-		
+
 	}
-	
+
 	public UserRest getUserBySession(@NonNull UUID sessionId) throws NoDataFoundException {
 		UserRest user;
+
 		try {
 			Session session = sessionRepository.findById(sessionId).orElseThrow();
 			user = new UserRest();
 			BeanUtils.copyProperties(session.getUser(), user);
-			
+
 		} catch (NoSuchElementException e) {
 			throw new NoDataFoundException(NoDataFoundException.SESSION_NOT_FOUND);
 		}
+
 		return user;
 	}
-	
+
 	public boolean validateSession(@NonNull UUID sessionId) throws NoDataFoundException {
+
 		try {
 			Session session = sessionRepository.findById(sessionId).orElseThrow();
 			Calendar now = Calendar.getInstance();
@@ -81,11 +83,14 @@ public class SessionService {
 		} catch (NoSuchElementException e) {
 			throw new NoDataFoundException(NoDataFoundException.SESSION_NOT_FOUND);
 		}
+
 	}
-	
+
 	private Date nextDate() {
 		Calendar now = Calendar.getInstance();
+
 		now.add(Calendar.MILLISECOND, Constants.MILISECONDS_TO_EXPIRE);
+
 		return now.getTime();
 	}
 

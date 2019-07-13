@@ -39,6 +39,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 			throws Exception {
 		String sesionID = request.getHeader(Constants.HEADER_SESSION);
 		UUID uuid;
+		
 		if (checkPublicUri(request.getRequestURI()) || request.getMethod().equals("OPTIONS")) {
 			return HandlerInterceptor.super.preHandle(request, response, handler);
 		}
@@ -63,14 +64,17 @@ public class SessionInterceptor implements HandlerInterceptor {
 	}
 
 	private boolean checkPublicUri(String requestUri) {
+		
 		if (authUriList == null) {
 			inicialize();
 		}
+		
 		return authUriList.contains(requestUri);
 	}
 
 	private void inicialize() {
 		authUriList = new ArrayList<>();
+		
 		authUriList.add(apiBase + "/users");
 		authUriList.add(apiBase + "/users/login");
 		authUriList.add(apiBase + "/error");

@@ -21,12 +21,12 @@ public class Session {
 	@GeneratedValue
 	@Column(columnDefinition = "uuid", updatable = false)
 	private UUID id;
-	
-	@OneToOne	
-	@JoinColumn(name = "user_id", nullable = false)	
+
+	@OneToOne
+	@JoinColumn(name = "user_id", nullable = false)
 	private Users user;
-	
+
 	@NotNull
 	private Date expirationDate;
-	
+
 }

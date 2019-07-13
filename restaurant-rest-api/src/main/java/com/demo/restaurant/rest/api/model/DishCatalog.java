@@ -16,15 +16,15 @@ import lombok.Data;
 @Data
 @Entity
 public class DishCatalog {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private DishType type;
-	
+
 	@Column(length = 100, unique = true)
 	@NotNull
 	private String name;

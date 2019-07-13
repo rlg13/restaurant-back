@@ -10,7 +10,7 @@
 	</parent>
 
 
-	<artifactId>restaurant-rest-api</artifactId>	
+	<artifactId>restaurant-rest-api</artifactId>
 	<name>restaurant-rest-api</name>
 	<description>Module Rest-api</description>
 
@@ -26,11 +26,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-hateoas</artifactId>
-		</dependency>
+		</dependency>	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -49,18 +45,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<!-- <exclusions> -->
-			<!-- <exclusion> -->
-			<!-- <groupId>org.junit.vintage</groupId> -->
-			<!-- <artifactId>junit-vintage-engine</artifactId> -->
-			<!-- </exclusion> -->
-			<!-- <exclusion> -->
-			<!-- <groupId>junit</groupId> -->
-			<!-- <artifactId>junit</artifactId> -->
-			<!-- </exclusion> -->
-			<!-- </exclusions> -->
 		</dependency>
-
 	</dependencies>
 
 	<build>

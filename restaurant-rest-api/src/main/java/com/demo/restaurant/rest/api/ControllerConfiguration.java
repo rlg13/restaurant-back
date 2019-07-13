@@ -16,13 +16,7 @@ public class ControllerConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-
-		registry.addInterceptor(sessionInterceptor);
-		// Not match patters.
-		// .addPathPatterns("/**")
-		// .excludePathPatterns( "**/users", "**/users/login");
-
-		// WebMvcConfigurer.super.addInterceptors(registry);
+		registry.addInterceptor(sessionInterceptor);	
 	}
 
 	@Override

@@ -23,37 +23,33 @@ public class Orders {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id; 
-	
+	private Long id;
+
 	@ManyToOne
 	@NotNull
-	@JoinColumn(name = "user_id")	
+	@JoinColumn(name = "user_id")
 	private Users user;
-	
+
 	@NotNull
 	private Date dayOrder;
-	
+
 	@NotNull
 	private Date dayToServe;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private OrderState state;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "first_dish_id", nullable = true)	
+	@JoinColumn(name = "first_dish_id", nullable = true)
 	private DishCatalog firstDish;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "second_dish_id", nullable = true)
 	private DishCatalog secondDish;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "desert_id", nullable = true)
 	private DishCatalog dessert;
-	
 
-	
-	
-	
 }

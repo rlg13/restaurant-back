@@ -31,9 +31,7 @@ public class DishController {
 
 	@GetMapping(path = "/dishes")
 	public ResponseEntity<List<DishRest>> getAllDishes() {
-
 		return ResponseEntity.ok().body(dishService.getAllDishes());
-
 	}
 
 	@GetMapping(path = "/dishes/{id}")
@@ -45,11 +43,13 @@ public class DishController {
 		} catch (NoDataFoundException exp) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, NoDataFoundException.DISH_NOT_FOUND, exp);
 		}
+
 	}
 
 	@GetMapping(path = "/dishes/type/{type}")
 	public ResponseEntity<List<DishRest>> getDishesByType(@PathVariable DishType type) {
 		log.debug("Dish service called whith parameter: " + type.name());
+
 		return ResponseEntity.ok().body(dishService.getDishesByType(type));
 	}
 

@@ -14,6 +14,7 @@ import com.demo.restaurant.rest.api.types.OrderState;
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
 	List<Orders> findByUserAndDayOrderBetween(Users user, Date initialDate, Date endDate);
+
 	List<Orders> findByStateAndDayToServe(OrderState state, Date dayToServe);
-	
+
 }
