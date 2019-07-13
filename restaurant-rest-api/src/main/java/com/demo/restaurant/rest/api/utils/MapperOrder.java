@@ -34,25 +34,25 @@ public class MapperOrder {
 
 	public OrderRest mapFromBBDD(Orders data) {
 		OrderRest order = new OrderRest();
-		DishRest fisrt = new DishRest();
+		DishRest first = new DishRest();
 		DishRest second = new DishRest();
 		DishRest dessert = new DishRest();
 		UserRest user = new UserRest();
 
 		BeanUtils.copyProperties(data, order);
 		if (data.getFirstDish() != null) {
-			BeanUtils.copyProperties(data.getFirstDish(), fisrt);
+			BeanUtils.copyProperties(data.getFirstDish(), first);
+			order.setFirstDish(first);
 		}
 		if (data.getSecondDish() != null) {
 			BeanUtils.copyProperties(data.getSecondDish(), second);
+			order.setSecondDish(second);
 		}
 		if (data.getDessert() != null) {
 			BeanUtils.copyProperties(data.getDessert(), dessert);
+			order.setDessert(dessert);
 		}
-		BeanUtils.copyProperties(data.getUser(), user, "password", "");
-		order.setFirstDish(fisrt);
-		order.setSecondDish(second);
-		order.setDessert(dessert);
+		BeanUtils.copyProperties(data.getUser(), user, "password");
 		order.setUser(user);
 
 		return order;

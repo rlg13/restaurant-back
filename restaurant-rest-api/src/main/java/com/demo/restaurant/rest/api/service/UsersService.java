@@ -1,7 +1,6 @@
 package com.demo.restaurant.rest.api.service;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +10,14 @@ import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.model.Users;
 import com.demo.restaurant.rest.api.repository.UsersRepository;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
 @Service
 public class UsersService {
 
-	@Autowired
+	
 	private UsersRepository usersRepository;
 
 	public UserRest createUser(UserRest user) throws AlreadyExistsException {

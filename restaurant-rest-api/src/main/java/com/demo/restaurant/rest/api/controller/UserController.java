@@ -1,6 +1,5 @@
 package com.demo.restaurant.rest.api.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,18 +17,20 @@ import com.demo.restaurant.rest.api.model.Session;
 import com.demo.restaurant.rest.api.service.SessionService;
 import com.demo.restaurant.rest.api.service.UsersService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @CrossOrigin(origins = "*")
 @RestController
 public class UserController {
 
-	@Autowired
+
 	private UsersService usersService;
 
-	@Autowired
-	SessionService sessionService;
+	private SessionService sessionService;
 
 	@DeleteMapping(path = "/users/logout")
-	public ResponseEntity<UserRest> getUserByName(@RequestParam(name = "id") Long id) {
+	public ResponseEntity<Void> logoutUserById(@RequestParam(name = "id") Long id) {
 		sessionService.invalidateSession(id);
 
 		return ResponseEntity.ok().build();
