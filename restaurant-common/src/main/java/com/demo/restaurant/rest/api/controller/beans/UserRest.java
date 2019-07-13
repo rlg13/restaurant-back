@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 public class UserRest {
 
 	private Long id;
-	private String name;	
+	private String name;
 	private String password;
 	private String sessionId;
 	private Boolean enableSystemOperations;
-	
+
 }

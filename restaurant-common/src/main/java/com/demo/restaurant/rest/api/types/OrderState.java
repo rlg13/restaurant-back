@@ -2,9 +2,6 @@ package com.demo.restaurant.rest.api.types;
 
 public enum OrderState {
 
-	RECEIVED,
-	DELIVERED,
-	PAID,
-	CANCELED
-	
+	RECEIVED, DELIVERED, PAID, CANCELED
+
 }

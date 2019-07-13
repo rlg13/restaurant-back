@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 public class DishRest {
 
 	private Long id;
-	
 	private String name;
-	
 	private DishType type;
 }

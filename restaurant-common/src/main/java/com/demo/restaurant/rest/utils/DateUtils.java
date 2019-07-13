@@ -18,7 +18,7 @@ public class DateUtils {
 			return normalizeDate(dayOrder);
 		}
 		if (normalizeDate(dayOrder).equals(normalizeDate(now.getTime()))) {
-			if (now.get(Calendar.HOUR_OF_DAY) > 11) {
+			if (now.get(Calendar.HOUR_OF_DAY) >= 11) {
 				now.add(Calendar.DAY_OF_YEAR, 1);
 				return normalizeDate(now.getTime());
 			}

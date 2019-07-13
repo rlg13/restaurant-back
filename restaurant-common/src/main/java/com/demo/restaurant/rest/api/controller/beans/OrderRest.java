@@ -12,20 +12,12 @@ import lombok.NoArgsConstructor;
 public class OrderRest {
 
 	private Long id;
-	
 	private Date dayOrder;
-	
 	private Date dayToServe;
-		
 	private UserRest user;
-	
-	private OrderState state;	
-	
-	private DishRest firstDish;	
-	
-	private DishRest secondDish;	
-
+	private OrderState state;
+	private DishRest firstDish;
+	private DishRest secondDish;
 	private DishRest dessert;
-	
-	
+
 }
