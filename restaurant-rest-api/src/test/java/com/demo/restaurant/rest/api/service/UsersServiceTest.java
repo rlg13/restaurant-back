@@ -72,7 +72,7 @@ public class UsersServiceTest {
 		// ASSERT
 		assertEquals(Long.valueOf(2), response.getId());
 		assertEquals(user.getName(), response.getName());
-	//	assertNull(response.getPassword());
+		assertNull(response.getPassword());
 	}
 	
 	@Test

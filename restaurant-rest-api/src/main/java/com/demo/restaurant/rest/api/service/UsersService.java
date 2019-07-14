@@ -22,12 +22,13 @@ public class UsersService {
 
 	public UserRest createUser(UserRest user) throws AlreadyExistsException {
 		Users newUser = new Users();
+		UserRest returnUser = new UserRest();
 
 		try {
 			BeanUtils.copyProperties(user, newUser);
 			newUser = usersRepository.save(newUser);
-			BeanUtils.copyProperties(newUser, user);
-			return user;
+			BeanUtils.copyProperties(newUser, returnUser,"password");
+			return returnUser;
 		} catch (DataIntegrityViolationException exp) {
 			throw new AlreadyExistsException(AlreadyExistsException.USER_EXISTS);
 		}
