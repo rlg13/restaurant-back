@@ -1,5 +1,7 @@
 package com.demo.restaurant.rest.api.controller;
 
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +46,7 @@ public class UserController {
 			Session session = sessionService.createSession(userLogged);
 			userLogged.setSessionId(session.getId().toString());
 			return ResponseEntity.ok().body(userLogged);
-		} catch (NoDataFoundException exp) {
+		} catch (NoDataFoundException | NoSuchAlgorithmException exp) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, NoDataFoundException.USER_NOT_FOUND, exp);
 		}
 
@@ -55,7 +57,7 @@ public class UserController {
 
 		try {
 			return ResponseEntity.ok().body(usersService.createUser(newUser));
-		} catch (AlreadyExistsException exp) {
+		} catch (AlreadyExistsException | NoSuchAlgorithmException exp) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, AlreadyExistsException.USER_EXISTS, exp);
 		}
 

@@ -15,6 +15,7 @@ import com.demo.restaurant.rest.api.model.Users;
 import com.demo.restaurant.rest.api.repository.OrdersRepository;
 import com.demo.restaurant.rest.api.types.OrderState;
 import com.demo.restaurant.rest.api.utils.MapperOrder;
+import com.demo.restaurant.rest.utils.DateUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -44,6 +45,7 @@ public class OrderService {
 	public OrderRest createOrder(@NonNull OrderRest order) {
 		Orders orderData;		
 		orderData = mapperOrder.mapToBBDD(order, OrderState.RECEIVED);
+		orderData.setDayToServe(DateUtils.calculateDayToServe(order.getDayOrder()));
 		orderData = ordersRepository.save(orderData);
 		
 		return mapperOrder.mapFromBBDD(orderData);

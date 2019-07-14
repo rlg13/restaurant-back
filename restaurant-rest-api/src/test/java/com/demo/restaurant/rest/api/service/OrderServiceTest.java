@@ -36,6 +36,7 @@ import com.demo.restaurant.rest.api.repository.OrdersRepository;
 import com.demo.restaurant.rest.api.types.DishType;
 import com.demo.restaurant.rest.api.types.OrderState;
 import com.demo.restaurant.rest.api.utils.MapperOrder;
+import com.demo.restaurant.rest.utils.DateUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
@@ -124,7 +125,7 @@ public class OrderServiceTest {
 
 		OrderRest order = new OrderRest();
 		order.setDayOrder(new Date());
-		order.setDayToServe(new Date());
+		
 		order.setState(OrderState.RECEIVED);
 		order.setUser(user);
 		order.setFirstDish(dish);
@@ -148,7 +149,7 @@ public class OrderServiceTest {
 		assertEquals(Long.valueOf(2l), orderRest.getId());
 		assertEquals(user.getId(), orderRest.getUser().getId());
 		assertEquals(order.getFirstDish().getId(), orderRest.getFirstDish().getId());
-		assertEquals(order.getDayToServe(), orderRest.getDayToServe());
+		assertEquals(DateUtils.calculateDayToServe(order.getDayOrder()), orderRest.getDayToServe());
 
 	}
 

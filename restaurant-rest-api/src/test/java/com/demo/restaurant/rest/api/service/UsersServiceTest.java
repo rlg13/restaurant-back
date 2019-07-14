@@ -8,6 +8,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
+import java.security.NoSuchAlgorithmException;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -36,11 +38,11 @@ public class UsersServiceTest {
 	private UsersService usersService;
 
 	@Test
-	public void should_be_return_duplicated_exception() throws AlreadyExistsException {
+	public void should_be_return_duplicated_exception() throws AlreadyExistsException, NoSuchAlgorithmException {
 		// ARRANGE
 		UserRest user = new UserRest();
 		user.setName("Test User");
-		user.setName("A Password");
+		user.setPassword("A Password");
 
 		when(usersRepository.save(any(Users.class))).thenThrow(DataIntegrityViolationException.class);
 
@@ -55,7 +57,7 @@ public class UsersServiceTest {
 	}
 
 	@Test
-	public void should_be_return_correct_rest_object() throws AlreadyExistsException {
+	public void should_be_return_correct_rest_object() throws AlreadyExistsException, NoSuchAlgorithmException {
 		// ARRANGE
 		UserRest user = new UserRest();
 		user.setName("Test User");
@@ -76,7 +78,7 @@ public class UsersServiceTest {
 	}
 	
 	@Test
-	public void should_return_error_user_not_found() throws NoDataFoundException  {
+	public void should_return_error_user_not_found() throws NoDataFoundException, NoSuchAlgorithmException  {
 		// ARRANGE
 		UserRest user = new UserRest();
 		user.setName("Test User");
@@ -93,7 +95,7 @@ public class UsersServiceTest {
 	}
 	
 	@Test
-	public void should_return_error_user_without_password() throws NoDataFoundException  {
+	public void should_return_error_user_without_password() throws NoDataFoundException, NoSuchAlgorithmException  {
 		// ARRANGE
 		UserRest user = new UserRest();
 		user.setName("Test User");

@@ -16,13 +16,13 @@ public class Users {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 50, nullable = false)
+	@Column(length = 50, nullable = false, unique = true)
 	private String name;
 
 	@Column(length = 64, nullable = false)
 	private String password;
 
-	@Column(columnDefinition = "boolean default false")
+	@Column(columnDefinition = "boolean default false", nullable = false)
 	private Boolean enableSystemOperations;
 	
 }
