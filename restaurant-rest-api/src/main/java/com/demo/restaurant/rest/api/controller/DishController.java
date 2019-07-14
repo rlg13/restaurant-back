@@ -29,10 +29,10 @@ public class DishController {
 	@Autowired
 	private DishService dishService;
 
-	@GetMapping(path = "/dishes")
-	public ResponseEntity<List<DishRest>> getAllDishes() {
-		return ResponseEntity.ok().body(dishService.getAllDishes());
-	}
+//	@GetMapping(path = "/dishes")
+//	public ResponseEntity<List<DishRest>> getAllDishes() {
+//		return ResponseEntity.ok().body(dishService.getAllDishes());
+//	}
 
 	@GetMapping(path = "/dishes/{id}")
 	public ResponseEntity<DishRest> getDish(@PathVariable Long id) {
@@ -54,7 +54,7 @@ public class DishController {
 	}
 
 	@PostMapping(path = "/dishes")
-	public ResponseEntity<DishRest> createUser(@RequestBody DishRest newDish) {
+	public ResponseEntity<DishRest> createDish(@RequestBody DishRest newDish) {
 
 		try {
 			return ResponseEntity.ok().body(dishService.createDish(newDish));

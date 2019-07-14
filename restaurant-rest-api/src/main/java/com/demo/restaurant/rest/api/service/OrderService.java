@@ -16,15 +16,16 @@ import com.demo.restaurant.rest.api.repository.OrdersRepository;
 import com.demo.restaurant.rest.api.types.OrderState;
 import com.demo.restaurant.rest.api.utils.MapperOrder;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
 @Service
 public class OrderService {
 
-	@Autowired
+	
 	private OrdersRepository ordersRepository;
 	
-	@Autowired
 	private MapperOrder mapperOrder;
 
 	public OrderRest getOrder(@NonNull Long id) throws NoDataFoundException {

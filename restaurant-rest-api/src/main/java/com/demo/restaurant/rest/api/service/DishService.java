@@ -16,25 +16,27 @@ import com.demo.restaurant.rest.api.model.DishCatalog;
 import com.demo.restaurant.rest.api.repository.DishCatalogRepository;
 import com.demo.restaurant.rest.api.types.DishType;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
 @Service
 public class DishService {
 
-	@Autowired
+
 	private DishCatalogRepository dishCatalogRepository;
 
-	public List<DishRest> getAllDishes() {
-		List<DishRest> allDishes = new ArrayList<>();
-
-		for (DishCatalog temp : dishCatalogRepository.findAll()) {
-			DishRest dest = new DishRest();
-			BeanUtils.copyProperties(temp, dest);
-			allDishes.add(dest);
-		}
-
-		return allDishes;
-	}
+//	public List<DishRest> getAllDishes() {
+//		List<DishRest> allDishes = new ArrayList<>();
+//
+//		for (DishCatalog temp : dishCatalogRepository.findAll()) {
+//			DishRest dest = new DishRest();
+//			BeanUtils.copyProperties(temp, dest);
+//			allDishes.add(dest);
+//		}
+//
+//		return allDishes;
+//	}
 
 	public List<DishRest> getDishesByType(DishType type) {
 		List<DishRest> dishesByType = new ArrayList<>();
@@ -69,7 +71,7 @@ public class DishService {
 			DishCatalog dishItem = dishCatalogRepository.findById(idDish).orElseThrow();
 			BeanUtils.copyProperties(dishItem, dish);
 		} catch (NoSuchElementException e) {
-			throw new NoDataFoundException(NoDataFoundException.USER_NOT_FOUND);
+			throw new NoDataFoundException(NoDataFoundException.DISH_NOT_FOUND);
 		}
 
 		return dish;

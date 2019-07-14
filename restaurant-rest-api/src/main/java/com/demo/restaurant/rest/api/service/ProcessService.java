@@ -2,7 +2,6 @@ package com.demo.restaurant.rest.api.service;
 
 import java.util.Calendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.restaurant.rest.api.controller.beans.OrderRest;
@@ -13,13 +12,14 @@ import com.demo.restaurant.rest.api.types.OrderState;
 import com.demo.restaurant.rest.api.utils.MapperOrder;
 import com.demo.restaurant.rest.utils.DateUtils;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class ProcessService {
 
-	@Autowired
 	private OrdersRepository ordersRepository;
 
-	@Autowired
 	private MapperOrder mapperOrder;
 
 	public OrderRest processState(OrderRest order, OrderState newState, UserRest user)
