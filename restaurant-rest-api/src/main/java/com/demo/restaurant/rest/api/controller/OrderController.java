@@ -48,7 +48,7 @@ public class OrderController {
 
 	private ProjectVars projectVars;
 
-/*	@GetMapping(path = "/orders/{id}")
+	@GetMapping(path = "/orders/{id}")
 	public ResponseEntity<OrderRest> getOrder(@PathVariable Long id) {
 
 		try {
@@ -60,7 +60,7 @@ public class OrderController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, NoDataFoundException.ORDER_NOT_FOUND, exp);
 		}
 
-	}*/
+	}
 
 	@PostMapping(path = "/orders")
 	public ResponseEntity<OrderRest> getOrder(@RequestBody OrderRest newOrder) {

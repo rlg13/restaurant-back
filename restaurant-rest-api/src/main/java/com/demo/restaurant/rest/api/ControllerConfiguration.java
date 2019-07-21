@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.demo.restaurant.rest.api.interceptors.SessionInterceptor;
 
 @Configuration
-@Profile(value = {"local","pro"})
+@Profile(value = {"local","docker","pro"})
 public class ControllerConfiguration implements WebMvcConfigurer {
 
 	@Autowired

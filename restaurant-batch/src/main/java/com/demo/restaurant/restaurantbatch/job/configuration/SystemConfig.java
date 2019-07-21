@@ -8,31 +8,27 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@Import({  DeliveryJobConfig.class })
+@Import({ DeliveryJobConfig.class })
 @EnableBatchProcessing
 @EnableScheduling
 public class SystemConfig {
 
 	private JobLauncher jobLauncher;
-	
+
 	private Job deliveryJob;
-	
+
 	@Autowired
-	public SystemConfig(JobLauncher jobLauncher,
-						Job deliveryJob) {
+	public SystemConfig(JobLauncher jobLauncher, Job deliveryJob) {
 		this.jobLauncher = jobLauncher;
 		this.deliveryJob = deliveryJob;
 	}
 
-	
 	@Scheduled(cron = "0 0 11 ? * *")
 	private void executeProcessDelivered() throws Exception {
 		jobLauncher.run(deliveryJob, generateJobParameters());
@@ -41,5 +37,5 @@ public class SystemConfig {
 	private JobParameters generateJobParameters() {
 		return new JobParametersBuilder().addDate("date", new Date()).toJobParameters();
 	}
-	
+
 }

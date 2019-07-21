@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:jobdb      
+  driverClassName: org.h2.Driver
+  username: sa
+  batch:
+    job:
+      enabled: true
+
+logging:
+  level:
+    org.springframework: ERROR
+    com.demo.restaurant: ERROR
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+
+api:
+  url: http://restaurant-api:8080
+  api-path:  /restaurant-api
+  endpoint-login: /users/login
+  endpoint-logout: /users/logout
+  endpoint-filterOrder: /orders/batch
+  endpoint-processOrder: /orders/%d/process/%s  
+  login:
+    name: BatchSystem
+    password: BatchSystem   

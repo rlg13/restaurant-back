@@ -1,12 +1,12 @@
 server:
-  port: 80
+  port: 8080
   servlet:
     context-path: /restaurant-api
    
 spring:
    datasource:
       url: jdbc:h2:mem:testdb
-      data: classpath*:data-pro.sql
+      data: classpath*:data-docker.sql
    driverClassName: org.h2.Driver
    username: sa
    
@@ -16,14 +16,15 @@ spring:
       console:
          enabled: true
 filter:
-  max-days: 45   
+  max-days: 45
 
 session:
-  max-miliseconds: 300000
+  max-miliseconds: 300000     
+
 
 logging:
   level:
-    org.springframework: ERROR
-    com.demo.restaurant: ERROR
+    org.springframework: INFO
+    com.demo.restaurant: DEBUG
   pattern:
     console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"         
