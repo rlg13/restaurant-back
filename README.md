@@ -19,6 +19,6 @@
 
 #### Structure 
 > Application contains three modules:
->* RestaurantRestApi &rarr; Rest Api consumed by frontend and batch module [documentation]
->* RestaurantBatch &rarr; Automatized operations module [documentation]
->* RestaurantCommon &rarr; Common library support [documentation]
+>* RestaurantRestApi &rarr; Rest Api consumed by frontend and batch module [Documentation](https://github.com/rlg13/restaurant-api/blob/master/restaurant-rest-api/Readme.md)
+>* RestaurantBatch &rarr; Automatized operations module [Documentation](https://github.com/rlg13/restaurant-api/blob/master/restaurant-batch/Readme.md)
+>* RestaurantCommon &rarr; Common library support [Documentation](https://github.com/rlg13/restaurant-api/blob/master/restaurant-common/Readme.md)
