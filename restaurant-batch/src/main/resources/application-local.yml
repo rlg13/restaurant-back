@@ -18,8 +18,9 @@ api:
   url: http://localhost:8080
   api-path:  /restaurant-api
   endpoint-login: /users/login
+  endpoint-logout: /users/logout
   endpoint-filterOrder: /orders/batch
-  endpoint-processOrder: /orders/%d/process/%s
+  endpoint-processOrder: /orders/%d/process/%s  
   login:
     name: BatchSystem
     password: BatchSystem   
