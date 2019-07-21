@@ -16,7 +16,10 @@ spring:
       console:
          enabled: true
 filter:
-  max-days: 45   
+  max-days: 45
+
+session:
+  max-miliseconds: 300000     
 
 
 logging:

@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 @RestController
 public class UserController {
 
-
 	private UsersService usersService;
 
 	private SessionService sessionService;
@@ -39,7 +38,7 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/users/login")
-	public ResponseEntity<UserRest> getUserByName(@RequestBody UserRest user) {
+	public ResponseEntity<UserRest> getUser(@RequestBody UserRest user) {
 
 		try {
 			UserRest userLogged = usersService.getUser(user);
@@ -56,7 +55,8 @@ public class UserController {
 	public ResponseEntity<UserRest> createUser(@RequestBody UserRest newUser) {
 
 		try {
-			return ResponseEntity.ok().body(usersService.createUser(newUser));
+			UserRest user = usersService.createUser(newUser);
+			return ResponseEntity.ok().body(user);
 		} catch (AlreadyExistsException | NoSuchAlgorithmException exp) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, AlreadyExistsException.USER_EXISTS, exp);
 		}

@@ -13,7 +13,7 @@ import com.demo.restaurant.rest.api.types.OrderState;
 
 @Component
 public class MapperOrder {
-
+	
 	public Orders mapToBBDD(OrderRest data, OrderState state) {
 		Orders order = new Orders();
 		Users user = new Users();
@@ -52,7 +52,7 @@ public class MapperOrder {
 			BeanUtils.copyProperties(data.getDessert(), dessert);
 			order.setDessert(dessert);
 		}
-		BeanUtils.copyProperties(data.getUser(), user, "password");
+		BeanUtils.copyProperties(data.getUser(), user, Constants.PASSWORD);
 		order.setUser(user);
 
 		return order;

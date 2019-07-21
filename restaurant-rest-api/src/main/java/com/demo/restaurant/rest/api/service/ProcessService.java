@@ -44,26 +44,26 @@ public class ProcessService {
 
 	private void checkNewStateFromReceived(OrderRest order, OrderState newState, UserRest user)
 			throws IlegalProcessStateException {
-		
-		if (newState != OrderState.CANCELED && newState != OrderState.DELIVERED) {
+
+		if (!OrderState.CANCELED.equals(newState) && !OrderState.DELIVERED.equals(newState)) {
 			throw new IlegalProcessStateException(OrderState.RECEIVED, newState);
 		}
-		if (DateUtils.normalizeDate(order.getDayToServe())
-				.before(DateUtils.normalizeDate(Calendar.getInstance().getTime())) && newState == OrderState.CANCELED) {
+		if (DateUtils.normalizeDate(order.getDayToServe()).before(
+				DateUtils.normalizeDate(Calendar.getInstance().getTime())) && OrderState.CANCELED.equals(newState)) {
 			throw new IlegalProcessStateException(IlegalProcessStateException.ILEGAL_CANCELATION);
 		}
-		if (newState == OrderState.DELIVERED && !user.getEnableSystemOperations()) {
+		if (OrderState.DELIVERED.equals(newState) && !user.getEnableSystemOperations()) {
 			throw new IlegalProcessStateException(IlegalProcessStateException.ILEGAL_USER_TO_ACTION);
 		}
-		if (newState == OrderState.CANCELED && !order.getUser().getId().equals(user.getId())) {
+		if (OrderState.CANCELED.equals(newState) && !order.getUser().getId().equals(user.getId())) {
 			throw new IlegalProcessStateException(IlegalProcessStateException.ILEGAL_USER_TO_ACTION);
 		}
 	}
 
 	private void checkNewStateFromDelivered(OrderRest order, OrderState newState, UserRest user)
 			throws IlegalProcessStateException {
-		
-		if (newState != OrderState.PAID) {
+
+		if (!OrderState.PAID.equals(newState)) {
 			throw new IlegalProcessStateException(OrderState.DELIVERED, newState);
 		}
 		if (!order.getUser().getId().equals(user.getId())) {

@@ -27,6 +27,7 @@ import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.model.Session;
 import com.demo.restaurant.rest.api.model.Users;
 import com.demo.restaurant.rest.api.repository.SessionRepository;
+import com.demo.restaurant.rest.api.utils.ProjectVars;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SessionServiceTest {
@@ -36,6 +37,9 @@ public class SessionServiceTest {
 
 	@Mock
 	SessionRepository sessionRepository;
+	
+	@Mock
+	ProjectVars projectVars;
 
 	@InjectMocks
 	private SessionService sessionService;
@@ -53,6 +57,7 @@ public class SessionServiceTest {
 			}
 
 		});
+		when(projectVars.getMilisecondsToExpireSession()).thenReturn(Integer.valueOf(5000));		
 		// ACT
 		Session sessionReturn = sessionService.createSession(user);
 		// ASSERT

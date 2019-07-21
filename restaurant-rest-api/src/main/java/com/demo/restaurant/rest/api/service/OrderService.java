@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.restaurant.rest.api.controller.beans.OrderRest;
@@ -24,9 +23,8 @@ import lombok.NonNull;
 @Service
 public class OrderService {
 
-	
 	private OrdersRepository ordersRepository;
-	
+
 	private MapperOrder mapperOrder;
 
 	public OrderRest getOrder(@NonNull Long id) throws NoDataFoundException {
@@ -43,38 +41,38 @@ public class OrderService {
 	}
 
 	public OrderRest createOrder(@NonNull OrderRest order) {
-		Orders orderData;		
+		Orders orderData;
 		orderData = mapperOrder.mapToBBDD(order, OrderState.RECEIVED);
 		orderData.setDayToServe(DateUtils.calculateDayToServe(order.getDayOrder()));
 		orderData = ordersRepository.save(orderData);
-		
+
 		return mapperOrder.mapFromBBDD(orderData);
 	}
 
 	public List<OrderRest> getAllOrdersByUser(Long id, Date inicialDate, Date endDate) {
 		List<OrderRest> returnOrders = new ArrayList<>();
-		
+
 		Users user = new Users();
 		user.setId(id);
-		
+
 		List<Orders> orderByUSer = ordersRepository.findByUserAndDayOrderBetween(user, inicialDate, endDate);
-		
-		for(Orders temp: orderByUSer) {
+
+		for (Orders temp : orderByUSer) {
 			returnOrders.add(mapperOrder.mapFromBBDD(temp));
 		}
-		
-		return returnOrders;
-	}
-	public List<OrderRest> getAllOrdersByStateAndDayToServe(OrderState state, Date dayToServe) {
-		List<OrderRest> returnOrders = new ArrayList<>();		
-		List<Orders> orderByUSer = ordersRepository.findByStateAndDayToServe(state, dayToServe);
-		
-		for(Orders temp: orderByUSer) {
-			returnOrders.add(mapperOrder.mapFromBBDD(temp));
-		}		
-		
+
 		return returnOrders;
 	}
 
+	public List<OrderRest> getAllOrdersByStateAndDayToServe(OrderState state, Date dayToServe) {
+		List<OrderRest> returnOrders = new ArrayList<>();
+		List<Orders> orderByUSer = ordersRepository.findByStateAndDayToServe(state, dayToServe);
+
+		for (Orders temp : orderByUSer) {
+			returnOrders.add(mapperOrder.mapFromBBDD(temp));
+		}
+
+		return returnOrders;
+	}
 
 }

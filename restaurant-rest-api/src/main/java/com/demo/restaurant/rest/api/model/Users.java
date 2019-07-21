@@ -24,5 +24,5 @@ public class Users {
 
 	@Column(columnDefinition = "boolean default false", nullable = false)
 	private Boolean enableSystemOperations;
-	
+
 }

@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.restaurant.rest.api.controller.beans.UserRest;
@@ -15,15 +14,18 @@ import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.model.Session;
 import com.demo.restaurant.rest.api.model.Users;
 import com.demo.restaurant.rest.api.repository.SessionRepository;
-import com.demo.restaurant.rest.api.utils.Constants;
+import com.demo.restaurant.rest.api.utils.ProjectVars;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
 @Service
 public class SessionService {
 
-	@Autowired
-	SessionRepository sessionRepository;
+	private SessionRepository sessionRepository;
+
+	private ProjectVars projectVars;
 
 	public Session createSession(UserRest user) {
 		Session session = new Session();
@@ -89,7 +91,7 @@ public class SessionService {
 	private Date nextDate() {
 		Calendar now = Calendar.getInstance();
 
-		now.add(Calendar.MILLISECOND, Constants.MILISECONDS_TO_EXPIRE);
+		now.add(Calendar.MILLISECOND, projectVars.getMilisecondsToExpireSession());
 
 		return now.getTime();
 	}

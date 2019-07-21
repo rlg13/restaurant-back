@@ -18,6 +18,8 @@ spring:
 filter:
   max-days: 45   
 
+session:
+  max-miliseconds: 300000
 
 logging:
   level:

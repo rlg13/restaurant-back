@@ -11,6 +11,7 @@ import com.demo.restaurant.rest.api.exceptions.AlreadyExistsException;
 import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.model.Users;
 import com.demo.restaurant.rest.api.repository.UsersRepository;
+import com.demo.restaurant.rest.api.utils.Constants;
 import com.demo.restaurant.rest.utils.CypherText;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class UsersService {
 				newUser.setEnableSystemOperations(Boolean.FALSE);
 			}
 			newUser = usersRepository.save(newUser);			
-			BeanUtils.copyProperties(newUser, returnUser,"password");
+			BeanUtils.copyProperties(newUser, returnUser,Constants.PASSWORD);
 			return returnUser;
 		} catch (DataIntegrityViolationException exp) {
 			throw new AlreadyExistsException(AlreadyExistsException.USER_EXISTS);
@@ -49,7 +50,8 @@ public class UsersService {
 		if (userData == null) {
 			throw new NoDataFoundException(NoDataFoundException.USER_NOT_FOUND);
 		}
-		BeanUtils.copyProperties(userData, userLoged, "password");
+		
+		BeanUtils.copyProperties(userData, userLoged, Constants.PASSWORD);
 
 		return userLoged;
 	}

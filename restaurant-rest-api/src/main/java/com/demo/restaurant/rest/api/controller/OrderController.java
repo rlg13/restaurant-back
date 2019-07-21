@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
@@ -30,28 +28,27 @@ import com.demo.restaurant.rest.api.service.ProcessService;
 import com.demo.restaurant.rest.api.service.SessionService;
 import com.demo.restaurant.rest.api.types.OrderState;
 import com.demo.restaurant.rest.api.utils.Constants;
+import com.demo.restaurant.rest.api.utils.ProjectVars;
 import com.demo.restaurant.rest.utils.DateUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@AllArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "*")
 @RestController
 public class OrderController {
 
-	@Autowired
 	private OrderService orderService;
 
-	@Autowired
 	private ProcessService processService;
 
-	@Autowired
 	private SessionService sessionService;
 
-	@Value("${filter.max-days}")
-	private Integer maxDaysFilter;
+	private ProjectVars projectVars;
 
-	@GetMapping(path = "/orders/{id}")
+/*	@GetMapping(path = "/orders/{id}")
 	public ResponseEntity<OrderRest> getOrder(@PathVariable Long id) {
 
 		try {
@@ -63,7 +60,7 @@ public class OrderController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, NoDataFoundException.ORDER_NOT_FOUND, exp);
 		}
 
-	}
+	}*/
 
 	@PostMapping(path = "/orders")
 	public ResponseEntity<OrderRest> getOrder(@RequestBody OrderRest newOrder) {
@@ -84,7 +81,7 @@ public class OrderController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.INVALID_PARAMS);
 		}
 		int days = DateUtils.daysBetweenDates(initialDate, endDate);
-		if (days > maxDaysFilter) {
+		if (days > projectVars.getMaxDaysFilter()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, InvalidRequestException.EXCEEDED_MAX_DAYS);
 		}
 		results = orderService.getAllOrdersByUser(userId, initialDate, endDate);
@@ -123,7 +120,7 @@ public class OrderController {
 			results = orderService.getAllOrdersByStateAndDayToServe(OrderState.RECEIVED,
 					DateUtils.normalizeDate(new Date()));
 		} catch (NoDataFoundException notFound) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, notFound.getMessage(), notFound);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, NoDataFoundException.SESSION_NOT_FOUND);
 		}
 
 		return ResponseEntity.ok().body(results);

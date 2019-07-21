@@ -10,7 +10,7 @@ import com.demo.restaurant.rest.api.types.DishType;
 
 @Repository
 public interface DishCatalogRepository extends JpaRepository<DishCatalog, Long> {
-	
+
 	public List<DishCatalog> findByType(DishType type);
 
 }

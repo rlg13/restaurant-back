@@ -2,7 +2,6 @@ package com.demo.restaurant.rest.api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,20 +18,16 @@ import com.demo.restaurant.rest.api.exceptions.NoDataFoundException;
 import com.demo.restaurant.rest.api.service.DishService;
 import com.demo.restaurant.rest.api.types.DishType;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@AllArgsConstructor
 @Slf4j
 @CrossOrigin("*")
 @RestController
 public class DishController {
 
-	@Autowired
 	private DishService dishService;
-
-//	@GetMapping(path = "/dishes")
-//	public ResponseEntity<List<DishRest>> getAllDishes() {
-//		return ResponseEntity.ok().body(dishService.getAllDishes());
-//	}
 
 	@GetMapping(path = "/dishes/{id}")
 	public ResponseEntity<DishRest> getDish(@PathVariable Long id) {

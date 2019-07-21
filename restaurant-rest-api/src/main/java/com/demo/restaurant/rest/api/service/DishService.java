@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +22,7 @@ import lombok.NonNull;
 @Service
 public class DishService {
 
-
 	private DishCatalogRepository dishCatalogRepository;
-
-//	public List<DishRest> getAllDishes() {
-//		List<DishRest> allDishes = new ArrayList<>();
-//
-//		for (DishCatalog temp : dishCatalogRepository.findAll()) {
-//			DishRest dest = new DishRest();
-//			BeanUtils.copyProperties(temp, dest);
-//			allDishes.add(dest);
-//		}
-//
-//		return allDishes;
-//	}
 
 	public List<DishRest> getDishesByType(DishType type) {
 		List<DishRest> dishesByType = new ArrayList<>();
@@ -58,7 +44,7 @@ public class DishService {
 			newDish = dishCatalogRepository.save(newDish);
 			dish.setId(newDish.getId());
 			return dish;
-		} catch (DataIntegrityViolationException exp) { // User name exists
+		} catch (DataIntegrityViolationException exp) {
 			throw new AlreadyExistsException(AlreadyExistsException.DISH_EXISTS);
 		}
 

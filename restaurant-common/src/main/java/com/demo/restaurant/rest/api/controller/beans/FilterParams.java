@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FilterParams {
 
-	private Date inicialDate;
+	private Date initialDate;
 	private Date endDate;
 	private UserRest user;
 
